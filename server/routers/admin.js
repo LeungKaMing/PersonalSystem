@@ -5,8 +5,8 @@
 const router = require('koa-router')()
 const admin = require('./../controllers/admin')
 
-const routers = router.get('/getMenu', admin.getMenu)
-                    .get('/getResume', admin.getResume)
-                    .post('/saveResume', admin.saveResume)
-
+const routers = router.get('/getResume', admin.getResume)
+                      .post('/saveResume', admin.saveResume)
+                      .get('/getProject', admin.getProject)
+                      .post('/saveProject', admin.saveProject)
 module.exports = routers

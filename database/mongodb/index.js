@@ -2,9 +2,11 @@ const mongoose = require('mongoose')
 // 引入库结构
 const UserInfoSchema = require('./schema').userInfoSchema
 const UserResumeSchema = require('./schema').userResumeSchema
+const UserProjectSchema = require('./schema').userProjectSchema
 // 创建模型
 const UserModel = mongoose.model('User', UserInfoSchema)
 const ResumeModel = mongoose.model('Resume', UserResumeSchema)
+const ProjectModel = mongoose.model('Project', UserProjectSchema)
 
 const utils = {
     /**
@@ -21,6 +23,9 @@ const utils = {
                         break
                     case 'resume':
                         model = ResumeModel
+                        break
+                    case 'project':
+                        model = ProjectModel
                         break
                 }
                 model(obj).save((err, res) => {
@@ -58,6 +63,9 @@ const utils = {
                 case 'resume':
                     model = ResumeModel
                     break
+                case 'project':
+                    model = ProjectModel
+                    break
             }
             model.find(info, (err, res) => {
                 if (err) {
@@ -68,7 +76,7 @@ const utils = {
                         console.log('没有此数据')
                         resolve(res)
                     } else {
-                        console.log(`查询到啊:${res}`)
+                        // console.log(`查询到啊:${res}`)
                         resolve(res)
                     }
                 }
@@ -90,6 +98,9 @@ const utils = {
                     break
                 case 'resume':
                     model = ResumeModel
+                    break
+                case 'project':
+                    model = ProjectModel
                     break
             }
             model.remove(info, (err, res) => {
@@ -116,6 +127,9 @@ const utils = {
                     break
                 case 'resume':
                     model = ResumeModel
+                    break
+                case 'project':
+                    model = ProjectModel
                     break
             }
             model.update(info, {'username': 'leung'}, (err, res) => {
@@ -144,6 +158,9 @@ const utils = {
                 case 'resume':
                     model = ResumeModel
                     break
+                case 'project':
+                    model = ProjectModel
+                    break
             }
             model.findByIdAndUpdate(id, updateInfo, (err, res) => {
                 if (err) {
@@ -158,6 +175,7 @@ const utils = {
     },
 
     findOneAndUpdate: (oldCondition, newCondition, schema) => {
+        console.log(oldCondition, newCondition, 'in')
         let model
         return new Promise((resolve, reject) => {
             switch (schema) {
@@ -167,13 +185,16 @@ const utils = {
                 case 'resume':
                     model = ResumeModel
                     break
+                case 'project':
+                    model = ProjectModel
+                    break
             }
-            model.findOneAndUpdate(oldCondition, newCondition, (err, res) => {
+            model.findOneAndUpdate(JSON.parse(oldCondition), newCondition, (err, res) => {
                 if (err) {
                     console.log('服务器出错')
                     reject(err)
                 } else {
-                    console.log(res)
+                    console.log(res, '更新成功')
                     resolve(res)
                 }
             })

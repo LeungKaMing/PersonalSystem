@@ -4,8 +4,7 @@ const userInfoController = require('./../controllers/user-info')
 
 // 所谓的控制层就是当服务端接收用户请求时所要响应的操作 => 路由层始终是找控制层
 // 链式写法
-const routers = router.get('/user/getUserInfo.json', userInfoController.getLoginUserInfo)
-                      .post('/user/signIn.json', userInfoController.signIn)
+const routers = router.post('/user/signIn.json', userInfoController.signIn)
                       .post('/user/signUp.json', userInfoController.signUp)
-
+                    //   .get('/user/getUserInfo.json', userInfoController.getLoginUserInfo) // 忽略
 module.exports = routers
