@@ -15,7 +15,7 @@ const admin = {
   async getResume (formData) {
     // 对表单数据的用户名 和 邮箱字段在数据库中进行查找
     let resultData = await userModel.getExistOne({
-      'userName': formData.userName
+      'userId': formData.userId
     }, 'resume')
     return resultData
   },
@@ -29,15 +29,13 @@ const admin = {
   async saveResume ( formData ) {
     let result
     let check = await admin.getResume(formData)
-    // formData = {userName: formData.userName, resume: JSON.stringify(formData)}
-    if (!check) {
+    if (!check.length) {
       result = await userModel.create(formData, 'resume')
     } else {
-      check[0].resume = JSON.parse(check[0].resume)
-      formData.resume = JSON.parse(formData.resume)
-      result = await userModel.update(check[0].resume, formData.resume, 'resume')
+      // model.update() 第一个选项为查询条件，第二个选项为更新查询出来数据的某个字段
+      result = await userModel.update({'userId': formData.userId}, {$set: {'resume': formData.resume}}, 'resume')
     }
-    // return result
+    return result
   },
 
   // /**

@@ -78,6 +78,7 @@ module.exports = {
   /**
    * 保存简历设置
    * 先查一下当前简历id是否存在，存在则更新，不存在则创建
+   * 20180211 done
    */
   async saveResume (ctx) {
     let formData = ctx.request.body
@@ -90,8 +91,12 @@ module.exports = {
 
     // 不存在则插入新数据，存在则更新旧数据 => 这个逻辑交给服务层去做，控制层只做结构
     let userResult = await userInfoService.saveResume(formData)
-    // console.log(userResult)
-    // ctx.body = result
+    if (userResult) {
+      result.message = 'success'
+      result.success = true
+      result.code = 200
+    }
+    ctx.body = result
   },
 
   /**

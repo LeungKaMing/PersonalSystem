@@ -118,7 +118,7 @@ const utils = {
     /**
      * 更新
      */
-    update: (info, schema) => {
+    update: (condition, updateOption, schema) => {
         let model
         return new Promise((resolve, reject) => {
             switch (schema) {
@@ -132,16 +132,11 @@ const utils = {
                     model = ProjectModel
                     break
             }
-            model.update(info, {'username': 'leung'}, (err, res) => {
+            model.update(condition, updateOption, (err, res) => {
                 if (err) {
                     console.log(`服务器出错${err}`)
                     reject(err)
                 } else {
-                    // if (!res.length) {
-                    //     console.log('查无此数据')
-                    // } else {
-                    //     console.log(`已更新相关数据:${res.username}`)
-                    // }
                     resolve(res)
                 }
             })

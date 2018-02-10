@@ -56,18 +56,17 @@ const user = {
    * @param  {obejct} options 查找条件参数
    * @return {object|null}        查找结果
    */
-  async update (oldCondition, newCondition, schema) {
+  async update (condition, updateOption, schema) {
     // let _sql = `
     // SELECT * from user_info
     //   where email="${options.email}" or name="${options.name}"
     //   limit 1`
     // 根据名字去查找特定用户
-    let result = await dbUtils.findOneAndUpdate(oldCondition, newCondition, schema)
-    // 数据库有多于1条以上的数据，默认取第一条
-    if ( Array.isArray(result) && result.length > 0 ) {
-      result = result[0]
+    let result = await dbUtils.update(condition, updateOption, schema)
+    if (result.ok === 1) {
+      result = 1
     } else {
-      result = null
+      result = 0
     }
     return result
   }
