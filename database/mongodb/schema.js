@@ -13,16 +13,17 @@ let userInfoSchema = new Schema({
 
 // 用户简历库(一个用户对应一个简历，唯一)
 let userResumeSchema = new Schema({
+    userId: {type: String},   // 用户名Id [public key]
     resumeId: {type: String},    // 用户简历Id
-    userId: {type: String},   // 用户名Id
     resume: {type: String}    // 用户简历Json字符串
 })
 
 // 项目信息库
 let userProjectSchema = new Schema({
+    userId: {type: String},   // 用户名Id [public key]
     projectId: {type: String},    // 用户项目Id
-    userId: {type: String},   // 用户名Id
     projectName: {type: String},    // 用户项目名
+    projectUrl: {type: String},    // 用户项目内容
 })
 
 // 导出一个名为User的model

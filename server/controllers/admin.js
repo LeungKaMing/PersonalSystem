@@ -4,53 +4,6 @@ const userInfoService = require('../services/admin-info')
 // const userCode = require('./../codes/user')
 
 module.exports = {
-  // /**
-  //  * 获取菜单 忽略
-  //  */
-  // async getMenu ( ctx ) {
-  //   // let formData = ctx.request.body
-  //   let result = {
-  //     success: false,
-  //     message: 'pls login',
-  //     data: [
-  //       {
-  //         name: '个人设置'
-  //       },
-  //       {
-  //         name: '简历设置'
-  //       },
-  //       {
-  //         name: '项目列表'
-  //       }
-  //     ],
-  //     code: ''
-  //   }
-  //   ctx.body = result
-  // },
-
-  // /**
-  //  * 个人设置
-  //  * find
-  //  */
-  // async getPersonConfig (ctx) {
-  //   let formData = ctx.request.body
-  //   let result = {
-  //     success: false,
-  //     message: 'pls login',
-  //     code: '',
-  //     data: null
-  //   }
-
-  //   let userResult = await userInfoService.getExistOne(formData)
-  //   console.log(userResult)
-  //   // if (userResult) {
-  //   //   result.data = userResult
-  //   //   result.success = true
-  //   //   result.code = 200
-  //   // }
-  //   // ctx.body = result
-  // },
-
   /**
    * 获取简历设置
    * find
@@ -102,8 +55,10 @@ module.exports = {
   /**
    * 获取项目列表
    * find + id
+   * 20180301 - 20180309 done
    */
   async getProject (ctx) {
+    let formData = ctx.request.query
     let result = {
       success: false,
       message: 'pls login',
@@ -112,20 +67,21 @@ module.exports = {
     }
 
     let userResult = await userInfoService.getProject(formData)
-    console.log(userResult)
-    // if (userResult) {
-    //   result.data = userResult
-    //   result.success = true
-    //   result.code = 200
-    // }
-    // ctx.body = result
+    if (userResult) {
+      result.data = userResult
+      result.success = true
+      result.code = 200
+    }
+    ctx.body = result
   },
 
   /**
    * 保存项目列表
    * 先查一下当前项目id是否存在，存在则更新，不存在则创建
+   * 20180309 done
    */
   async saveProject (ctx) {
+    let formData = ctx.request.body
     let result = {
       success: false,
       message: 'pls login',
@@ -134,12 +90,11 @@ module.exports = {
     }
 
     let userResult = await userInfoService.saveProject(formData)
-    console.log(userResult)
-    // if (userResult) {
-    //   result.data = userResult
-    //   result.success = true
-    //   result.code = 200
-    // }
-    // ctx.body = result
+    if (userResult) {
+      result.data = userResult
+      result.success = true
+      result.code = 200
+    }
+    ctx.body = result
   }
 }

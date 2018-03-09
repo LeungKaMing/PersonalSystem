@@ -38,27 +38,14 @@ const admin = {
     return result
   },
 
-  // /**
-  //  * 更新用户简历
-  //  * @param  {object} user 用户信息
-  //  * @param  {object} schema 数据库结构
-  //  * @return {object}      创建结果
-  //  */
-  // async updateResume ( oldCondition, newCondition ) {
-  //   oldCondition = {userName: oldCondition.userName, resume: oldCondition.resume}
-  //   newCondition = {userName: newCondition.userName, resume: JSON.stringify(newCondition)}
-  //   let result = await userModel.updateResume(oldCondition, newCondition, 'resume')
-  //   return result
-  // },
-
   /**
    * 查找用户姓名查找对应个人简历
    */
   async getProject (formData) {
     // 对表单数据的用户名 和 邮箱字段在数据库中进行查找
     let resultData = await userModel.getExistOne({
-      'userName': formData.userName
-    }, 'resume')
+      'projectId': formData.projectId
+    }, 'project')
     return resultData
   },
 
@@ -70,30 +57,15 @@ const admin = {
    */
   async saveProject ( formData ) {
     let result
-    let check = await userModel.getExistOne(formData, 'resume')
-    formData = {userName: formData.userName, resume: JSON.stringify(formData)}
-    if (!check) {
-      result = await userModel.create(formData, 'resume')
+    let check = await admin.getProject(formData)
+    if (!check.length) {
+      result = await userModel.create(formData, 'project')
     } else {
-      console.log(check, '已存在条件')
-      console.log(formData, '已存在条件')
-      // result = await userModel.update(check, formData, 'resume')
+      // model.update() 第一个选项为查询条件，第二个选项为更新查询出来数据的某个字段
+      result = await userModel.update({'projectId': formData.projectId}, {$set: {'projectUrl': formData.projectUrl}}, 'project')
     }
     return result
   }
-
-  // /**
-  //  * 更新用户简历
-  //  * @param  {object} user 用户信息
-  //  * @param  {object} schema 数据库结构
-  //  * @return {object}      创建结果
-  //  */
-  // async updateProject ( oldCondition, newCondition ) {
-  //   oldCondition = {userName: oldCondition.userName, resume: oldCondition.resume}
-  //   newCondition = {userName: newCondition.userName, resume: JSON.stringify(newCondition)}
-  //   let result = await userModel.updateResume(oldCondition, newCondition, 'resume')
-  //   return result
-  // }
 }
 
 module.exports = admin

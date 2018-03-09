@@ -8,6 +8,8 @@ const UserModel = mongoose.model('User', UserInfoSchema)
 const ResumeModel = mongoose.model('Resume', UserResumeSchema)
 const ProjectModel = mongoose.model('Project', UserProjectSchema)
 
+// utils.insertData({}, 'project')
+
 const utils = {
     /**
      * 插入
@@ -16,7 +18,6 @@ const utils = {
         let model
         return new Promise((resolve, reject) => {
             let temp = (obj) => {
-                console.log(obj)
                 switch (schema) {
                     case 'user':
                         model = UserModel

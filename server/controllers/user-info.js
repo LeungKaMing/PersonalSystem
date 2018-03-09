@@ -19,7 +19,7 @@ module.exports = {
       data: null,
       code: ''
     }
-
+    console.log(formData, 'in controller')
     // 把请求主体带到数据库中查询，判断是否存在对应用户
     let userResult = await userInfoService.signIn( formData )
     // 存在，则进一步判断post请求主体的字段是否跟数据库返回的对应字段相等
@@ -55,18 +55,21 @@ module.exports = {
   /**
    * 注册操作
    * @param   {obejct} ctx 上下文对象
+   * 去除无意义逻辑 20180309 done
    */
   async signUp( ctx ) {
     // 获取post请求主体
     let formData = ctx.request.body
+    let userResult
     let result = {
       success: false,
       message: '',
+      code: '',
       data: null
     }
 
     // 把请求主体带到数据库中查询，验证状态
-    let validateResult = userInfoService.validatorSignUp( formData )
+    let validateResult = userInfoService.validatorSignUp( formData )  // 这个校验方法后面可以提取到后端公共方法
     if ( validateResult.success === false ) {
       result = validateResult
       ctx.body = result
@@ -75,36 +78,27 @@ module.exports = {
 
     // 把请求主体带到数据库中查询，查找是否存在相应用户
     let existOne  = await userInfoService.getExistOne(formData)
-
-    // 存在
-    if ( existOne  ) {
-      // 1. 用户通过姓名注册
-      // 从数据库找到的名字字段 跟 请求主体的名字字段 相同，给出相应提示
-      if ( existOne .username === formData.userName ) {
-        result.message = userCode.FAIL_USER_NAME_IS_EXIST
-        ctx.body = result
-        return
-      }
-      // // 2. 用户通过邮箱注册
-      // // 从数据库找到的邮箱字段 跟 请求主体的邮箱字段 相同，给出相应提示
-      // if ( existOne .email === formData.email ) {
-      //   result.message = userCode.FAIL_EMAIL_IS_EXIST
-      //   ctx.body = result
-      //   return
-      // }
+    
+    // 不存在则注册，存在则返回错误信息
+    if ( !existOne.length  ) {
+      // 不存在，则创建一个
+      userResult = await userInfoService.create({
+        // email: formData.email,
+        password: formData.password,
+        userName: formData.userName,
+        create_time: new Date().getTime(),
+        level: 1,
+      })
+    } else {
+      result.code = 404
+      result.message = userCode.FAIL_USER_NAME_IS_EXIST // 查到数据库有同名用户就告诉用户已经注册了
+      ctx.body = result
+      return false
     }
-
-    // 不存在，则创建一个
-    let userResult = await userInfoService.create({
-      email: formData.email,
-      password: formData.password,
-      userName: formData.userName,
-      create_time: new Date().getTime(),
-      level: 1,
-    })
 
     if ( userResult) {
       result.success = true
+      result.message = '注册成功'
     } else {
       result.message = userCode.ERROR_SYS
     }
