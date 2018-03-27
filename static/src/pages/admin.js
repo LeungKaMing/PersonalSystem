@@ -38,12 +38,12 @@ export default class Admin extends React.Component {
                 renderElement: <div>博客</div>
             })
         } else if (item.key === '4') {
-            // 菜单第三为博客
+            // 菜单第四为聊天室
             this.setState({
                 renderElement: <div>聊天室</div>
             })
         } else if (item.key === '5') {
-            // 菜单第三为博客
+            // 菜单第五为拖拽系统
             this.setState({
                 renderElement: <div>拖拽系统</div>
             })
