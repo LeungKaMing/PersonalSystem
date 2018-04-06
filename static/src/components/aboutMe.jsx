@@ -106,7 +106,7 @@ export default class AboutMe extends React.Component {
 									)
 								}
 								return (
-								   <div>
+								   <div key={index}>
 									   <span>{ item.text }: </span>
 										{element}
 								   </div>
