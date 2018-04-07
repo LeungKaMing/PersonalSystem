@@ -11,16 +11,7 @@ export default class AboutMe extends React.Component {
 		super(props)
 		this.state = {
 			baseInfo: [],
-			avatar: '',
-			// 简历编辑项
-			nameEdit: false,
-			name: '你的名字',
-			careerEdit: false,
-			career: '你的职业',
-			locateEdit: false,
-			locate: '你的所在地',
-			contactEdit: false,
-			contact: '你的联系方式'
+			avatar: ''
 		}
 	}
 
@@ -30,39 +21,66 @@ export default class AboutMe extends React.Component {
 			baseInfo: [
 				{
 					name: 'name',
-					text: '姓名'
+					text: '姓名',
+					status: false
 				}, {
 					name: 'career',
-					text: '职业'
+					text: '职业',
+					status: false
 				}, {
 					name: 'locate',
-					text: '所在地'
+					text: '所在地',
+					status: false
 				}, {
 					name: 'contact',
-					text: '联系方式'
+					text: '联系方式',
+					status: false
 				}
 			]
 		})
 	}
 
-	// 实时改变对应字段的值
-	changeItem (name, e) {
+	// 改变按钮状态
+	changeStatus (per, perIndex, entire) {
+		let container = []
+		entire.map((item, index)=>{
+			if (index !== perIndex) {
+				// 非当前索引就统一改变其状态值为false
+				item.status = false
+				container.push(item)
+			} else {
+				// 当前索引的就判断状态开关
+				if (!per.status) {
+					per.status = true
+				} else {
+					per.status = false
+				}
+				// 放进容器
+				container.push(per)
+			}
+		})
+		// 触发render
 		this.setState({
-			[name]: e.target.value
+			baseInfo: container
 		})
 	}
 
-	// 实时改变对应字段的状态
-	changeEdit (edit) {
-		if (!this.state[edit]) {
-			this.setState({
-				[edit]: true
-			})
-		} else {
-			this.setState({
-				[edit]: false
-			})
-		}
+	// 改变输入框值
+	changeInputVal (per, perIndex, entire, e) {
+		let container2 = []
+		entire.map((item, index) => {
+			// 非当前索引就不改变输入框值
+			if (index !== perIndex) {
+				container2.push(item)
+			} else {
+				per.name = e.target.value
+				container2.push(per)
+			}
+		})
+		// 触发render
+		this.setState({
+			baseInfo: container2
+		})
 	}
 
 	// 保存用户个人简历
@@ -93,28 +111,35 @@ export default class AboutMe extends React.Component {
 						{/* 个人信息 */}
 						<div><img style={{width: '100%'}} src={ this.state.avatar } alt=""/></div>
 						{
-							this.state.baseInfo.map((item, index) => {
+							this.state.baseInfo.map((item, index, entire) => {
 								let element
-								if (!this.state[item.name + 'Edit']) {
-									element = <span>{ this.state[item.name] }<button onClick={ () => { this.setState({[item.name + 'Edit']: true}) } }>编辑</button></span>
+								if (!item.status) {
+									element = (
+										<span>
+											<span style={{display: 'inline-block', marginRight: '100px', width: '100px'}}>{item.name }</span>
+											<button onClick={ this.changeStatus.bind(this, item, index, entire) }>编辑</button>
+										</span>
+									)
 								} else {
 									element = (
 										<span>
-											<input type="text" placeholder="Enter sth, pls..." value={ this.state[item.name] } onChange={ this.changeItem.bind(this, item.name) } onBlur={ this.changeEdit.bind(this, item.name + 'Edit') } />
-											<button onClick={ () => { this.setState({[item.name + 'Edit']: false}) } }>保存</button>
+											<input type="text" style={{display: 'inline-block', marginRight: '100px', width: '100px'}} value={ item.name } onChange={ this.changeInputVal.bind(this, item, index, entire) }/>
+											<button onClick={ this.changeStatus.bind(this, item, index, entire) }>保存</button>
 										</span>
 									)
 								}
 								return (
-								   <div key={index}>
-									   <span>{ item.text }: </span>
+								   <div key={index} style={{textAlign: 'left'}}>
+									   <span style={{display: 'inline-block', paddingRight: '20px', width: '80px'}}>{ item.text }: </span>
 										{element}
 								   </div>
 								) 
 							})
 						}
 					</Col>
-					<Col span={20}>个人描述</Col>
+					<Col span={20}>
+						<div>引入第三方编辑器插件</div>
+					</Col>
 				</Row>
 				<div style={ {margin: '0 auto', textAlign: 'center'} } onClick={ this.save.bind(this) }>提交</div>
 			</div>
