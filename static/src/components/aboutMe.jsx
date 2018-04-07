@@ -16,6 +16,10 @@ export default class AboutMe extends React.Component {
 	}
 
 	componentWillMount () {
+		// console.log(CKEDITOR)
+	}
+
+	componentDidMount () {
 		this.setState({
 			avatar: 'https://avatars1.githubusercontent.com/u/18412359?s=460&v=4',
 			baseInfo: [
@@ -38,6 +42,7 @@ export default class AboutMe extends React.Component {
 				}
 			]
 		})
+		window.CKEDITOR.replace('editorArea', {width: '500px', toolbar: 'Full'})
 	}
 
 	// 改变按钮状态
@@ -138,7 +143,9 @@ export default class AboutMe extends React.Component {
 						}
 					</Col>
 					<Col span={20}>
-						<div>引入第三方编辑器插件</div>
+						<div style={{ marginLeft: '250px' }}>
+							<textarea id="editorArea" name="editorArea" rows="10" cols="80"></textarea>
+						</div>
 					</Col>
 				</Row>
 				<div style={ {margin: '0 auto', textAlign: 'center'} } onClick={ this.save.bind(this) }>提交</div>
