@@ -110,45 +110,48 @@ export default class AboutMe extends React.Component {
 
 	render () {
 		return (
-			<div>
+			<div style={{marginTop: '10px', fontSize: '16px'}}>
 				<Row>
-					<Col span={4}>
+					<Col span={6} style={{backgroundColor: '#254665'}}>
 						{/* 个人信息 */}
-						<div><img style={{width: '100%'}} src={ this.state.avatar } alt=""/></div>
-						{
-							this.state.baseInfo.map((item, index, entire) => {
-								let element
-								if (!item.status) {
-									element = (
-										<span>
-											<span style={{display: 'inline-block', marginRight: '100px', width: '100px'}}>{item.name }</span>
-											<button onClick={ this.changeStatus.bind(this, item, index, entire) }>编辑</button>
-										</span>
-									)
-								} else {
-									element = (
-										<span>
-											<input type="text" style={{display: 'inline-block', marginRight: '100px', width: '100px'}} value={ item.name } onChange={ this.changeInputVal.bind(this, item, index, entire) }/>
-											<button onClick={ this.changeStatus.bind(this, item, index, entire) }>保存</button>
-										</span>
-									)
-								}
-								return (
-								   <div key={index} style={{textAlign: 'left'}}>
-									   <span style={{display: 'inline-block', paddingRight: '20px', width: '80px'}}>{ item.text }: </span>
-										{element}
-								   </div>
-								) 
-							})
-						}
+						<div><img style={{paddingTop: '10px', width: '200px'}} src={ this.state.avatar } alt=""/></div>
+						{/* 背景色 */}
+						<div style={{padding: '0 10px', height: '100vh'}}>
+							{
+								this.state.baseInfo.map((item, index, entire) => {
+									let element
+									if (!item.status) {
+										element = (
+											<span style={{color: '#fff'}}>
+												<span style={{display: 'inline-block', marginRight: '100px', width: '100px'}}>{item.name }</span>
+												<button onClick={ this.changeStatus.bind(this, item, index, entire) }>编辑</button>
+											</span>
+										)
+									} else {
+										element = (
+											<span>
+												<input type="text" style={{display: 'inline-block', marginRight: '100px', width: '100px'}} value={ item.name } onChange={ this.changeInputVal.bind(this, item, index, entire) }/>
+												<button style={{color: '#fff'}} onClick={ this.changeStatus.bind(this, item, index, entire) }>保存</button>
+											</span>
+										)
+									}
+									return (
+										<div key={index} style={{paddingTop: '10px', textAlign: 'left'}}>
+											<span style={{display: 'inline-block', paddingRight: '20px', width: '100px', color: '#fff'}}>{ item.text }: </span>
+											{element}
+										</div>
+									) 
+								})
+							}
+						</div>
 					</Col>
-					<Col span={20}>
+					<Col span={18}>
 						<div style={{ marginLeft: '250px' }}>
 							<textarea id="editorArea" name="editorArea" rows="10" cols="80"></textarea>
 						</div>
 					</Col>
 				</Row>
-				<div style={ {margin: '0 auto', textAlign: 'center'} } onClick={ this.save.bind(this) }>提交</div>
+				{/* <div style={ {margin: '0 auto', textAlign: 'center'} } onClick={ this.save.bind(this) }>提交</div> */}
 			</div>
 		)
 	}
