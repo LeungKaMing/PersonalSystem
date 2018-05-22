@@ -16,7 +16,7 @@ export default class AboutMe extends React.Component {
 	}
 
 	componentWillMount () {
-		// console.log(CKEDITOR)
+		console.log(CKEDITOR)
 	}
 
 	componentDidMount () {
@@ -91,21 +91,22 @@ export default class AboutMe extends React.Component {
 	// 保存用户个人简历
 	save () {
 		const self = this
-		console.log('submit')
-		saveResume({
-			data: {
-				userName: self.state.name,
-				career: self.state.career,
-				locate: self.state.locate,
-				contact: self.state.contact
-			},
-			onSuccess (res) {
-				console.log(res)
-			},
-			onFailure (err) {
-				console.log(err)
-			}
-		})
+		console.log('submit', CKEDITOR.instances.editorArea.getData(), '获取ckeditor带标签的内容')
+		console.log('submit', CKEDITOR.instances.editorArea.document.getBody().getText(), '获取ckeditor不带标签的内容')
+		// saveResume({
+		// 	data: {
+		// 		userName: self.state.name,
+		// 		career: self.state.career,
+		// 		locate: self.state.locate,
+		// 		contact: self.state.contact
+		// 	},
+		// 	onSuccess (res) {
+		// 		console.log(res)
+		// 	},
+		// 	onFailure (err) {
+		// 		console.log(err)
+		// 	}
+		// })
 	}
 
 	render () {
@@ -151,7 +152,7 @@ export default class AboutMe extends React.Component {
 						</div>
 					</Col>
 				</Row>
-				{/* <div style={ {margin: '0 auto', textAlign: 'center'} } onClick={ this.save.bind(this) }>提交</div> */}
+				<div style={ {margin: '0 auto', textAlign: 'center'} } onClick={ this.save.bind(this) }>提交</div>
 			</div>
 		)
 	}
